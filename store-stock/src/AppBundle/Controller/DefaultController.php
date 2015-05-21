@@ -3,6 +3,9 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Document\Book;
+use AppBundle\Document\Order;
+use DateInterval;
+use DateTime;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -56,14 +59,61 @@ class DefaultController extends Controller
             ->get('doctrine_mongodb')
             ->getRepository('AppBundle:Book')
             ->findAll();
-        return new JsonResponse($books);
+        return new JsonResponse($books ?: []);
     }
 
     /**
      * @Route("/order/new", name="order_new")
+     * @param Request $request
+     * @return Response
      */
-    public function addOrderAction(){
+    public function addOrderAction(Request $request){
 
+        $book     = $request->request->get('book',false);
+        $quantity = $request->request->get('quantity',false);
+        $cliName  = $request->request->get('clientName',false);
+        $address  = $request->request->get('address',false);
+        $email    = $request->request->get('email',false);
+
+
+        if(!$book){
+            return new Response('Parameter "book    " missing',400);
+        }elseif(!$quantity || $quantity <= 0){
+            return new Response('Parameter "quantity" missing or <= 0',400);
+        }elseif(!$cliName){
+            return new Response('Parameter "cliName " missing',400);
+        }elseif(!$address){
+            return new Response('Parameter "address " missing',400);
+        }elseif(!$email){
+            return new Response('Parameter "email   " missing',400);
+        }
+
+        $book = $this->get('doctrine_mongodb')->getRepository('AppBundle:Book')->find($book);
+
+        if(!$book){
+            return new Response("Book $book not found",400);
+        }
+        $dm = $this->get('doctrine_mongodb')->getManager();
+        $avQuantity = $book->stock;
+        if ($avQuantity > $quantity){
+            $book->stock -= $quantity;
+            $date = $date = new DateTime(time());
+            $date->add(new DateInterval('P1D'));
+
+            $order = new Order();
+            $order->address = $address;
+            $order->clientName = $cliName;
+            $order->email = $email;
+            $order->title = $book;
+            $order->state = Order::DISPATCHED;
+            $order->dispatchingTime = $date;
+            $dm->persist($book);
+        }else{
+            //Enviar email
+        }
+
+        $dm->flush();
+        return new JsonResponse($order);
     }
 
 }

@@ -26,6 +26,7 @@ class DefaultController extends Controller
         $photo       = $request->request->get('photo',false);
         $title       = $request->request->get('title',false);
         $description = $request->request->get('description',false);
+        $stock       = $request->request->get('stock',false);
 
         if(!$photo){
             return new Response('Parameter "photo" missing ');
@@ -33,6 +34,8 @@ class DefaultController extends Controller
             return new Response('Parameter "title" missing ');
         }elseif(!$description){
             return new Response('Parameter "description" missing ');
+        }elseif(!$stock){
+            return new Response('Parameter "stock" missing ');
         }
 
         $book = new Book();
@@ -53,14 +56,12 @@ class DefaultController extends Controller
             ->get('doctrine_mongodb')
             ->getRepository('AppBundle:Book')
             ->findAll();
-
         return new JsonResponse($books);
     }
 
-
-    public function removeBookAction(){
-
-    }
+    /**
+     * @Route("/order/new", name="order_new")
+     */
     public function addOrderAction(){
 
     }

@@ -19,7 +19,6 @@ class DefaultController extends Controller
     {
         /** @var Repository $requestsRepo */
         $requestsRepo = $this->get('doctrine_mongodb')->getRepository('AppBundle:StockRequest');
-
         $requests = $requestsRepo->findAll();
 
         return $this->success($requests);
@@ -48,6 +47,34 @@ class DefaultController extends Controller
         $dm->flush();
 
         return $this->success();
+    }
+
+    /**
+     * @Route("/send/{id}", requirements={"id" = ".+"}, name="send-stock", methods={"GET"})
+     * @return JsonResponse
+     */
+    public function sendStockAction($id)
+    {
+        /** @var Repository $requestsRepo */
+        $requestsRepo = $this->get('doctrine_mongodb')->getRepository('AppBundle:StockRequest');
+        $stockRequest = $requestsRepo->findOneBy(['id' => $id]);
+
+        if (!$stockRequest) {
+            return $this->notFound();
+        }
+
+        // TODO: Call Store
+
+        $dm = $this->get('doctrine_mongodb')->getManager();
+        $dm->remove($stockRequest);
+        $dm->flush();
+
+        return $this->success($stockRequest);
+    }
+
+    protected function notFound($message = 'Not Found')
+    {
+        return new JsonResponse(['message' => $message], 404);
     }
 
     protected function fail($message = null)

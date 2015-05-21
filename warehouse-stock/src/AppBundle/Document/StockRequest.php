@@ -84,6 +84,11 @@ class StockRequest implements JsonSerializable
      */
     function jsonSerialize()
     {
-        return ['id' => $this->id, 'timestamp' => (new \MongoId($this->id))->getTimestamp() , 'title' => $this->title, 'quantity' => $this->quantity];
+        return [
+            'id' => $this->id,
+            'timestamp' => (new \MongoId($this->id))->getTimestamp() ,
+            'title' => $this->title,
+            'quantity' => $this->quantity
+        ];
     }
 }

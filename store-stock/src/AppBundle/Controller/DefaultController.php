@@ -45,6 +45,19 @@ class DefaultController extends Controller
 
         return new JsonResponse($book);
     }
+    /**
+     * @Route("/book/list", name="book_list")
+     */
+    public function listBooksAction(){
+        $books = $this
+            ->get('doctrine_mongodb')
+            ->getRepository('AppBundle:Book')
+            ->findAll();
+
+        return new JsonResponse($books);
+    }
+
+
     public function removeBookAction(){
 
     }

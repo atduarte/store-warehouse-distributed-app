@@ -24,6 +24,7 @@ class Book extends  Document implements \JsonSerializable
 
     function jsonSerialize(){
         return [
+            'id'         => $this->id,
             'photo'      => $this->photo,
             'title'      => $this->title,
             'description'=> $this->description,

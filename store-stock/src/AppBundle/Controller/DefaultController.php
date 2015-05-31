@@ -88,11 +88,12 @@ class DefaultController extends Controller
             return new Response('Parameter "email   " missing',400);
         }
 
-        $book = $this->get('doctrine_mongodb')->getRepository('AppBundle:Book')->find($book);
+        $book = $this->get('doctrine_mongodb')->getRepository('AppBundle:Book')->find(['id' => $book]);
 
         if(!$book){
             return new Response("Book $book not found",400);
         }
+
         $dm = $this->get('doctrine_mongodb')->getManager();
         $avQuantity = $book->stock;
         if ($avQuantity > $quantity){

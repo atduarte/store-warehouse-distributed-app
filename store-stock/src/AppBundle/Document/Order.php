@@ -42,6 +42,7 @@ class Order extends Document implements JsonSerializable{
     function jsonSerialize()
     {
         return [
+            'id'             => $this->id,
             'title'          => $this->title,
             'quantity'       => $this->quantity,
             'clientName'     => $this->clientName,

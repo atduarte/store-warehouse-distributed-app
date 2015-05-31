@@ -19,12 +19,15 @@ class Book extends  Document implements \JsonSerializable
     public $title;
     /** @MongoDB\String() */
     public $description;
+    /** @MongoDB\Int() */
+    public $stock;
 
     function jsonSerialize(){
         return [
             'photo'      => $this->photo,
             'title'      => $this->title,
-            'description'=> $this->description
+            'description'=> $this->description,
+            'stock'      => $this->stock
         ];
     }
 }

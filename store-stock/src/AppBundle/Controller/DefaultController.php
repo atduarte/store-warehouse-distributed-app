@@ -21,8 +21,11 @@ class DefaultController extends Controller
     {
         return $this->render('default/index.html.twig');
     }
+
     /**
      * @Route("/book/add", name="book_add")
+     * @param Request $request
+     * @return JsonResponse|Response
      */
     public function addBookAction(Request $request){
 
@@ -51,8 +54,30 @@ class DefaultController extends Controller
 
         return new JsonResponse($book);
     }
+
     /**
-     * @Route("/book/list", name="book_list")
+     * @Route("/book/delete", name="book_delete")
+     * @param Request $request
+     * @return JsonResponse|Response
+     */
+    public function deleteBookAction(Request $request){
+        $book = $request->request->get('book');
+        if(!$book){
+            return new Response("Parameter 'book' not found");
+        }
+
+        $book = $this->get('doctrine_mongodb')->getRepository('AppBundle:Book')->find($book);
+        if(!$book){
+            return new Response("Book $book not found",400);
+        }
+        $this->get('doctrine_mongodb')->getManager()->remove($book);
+        $this->get('doctrine_mongodb')->getManager()->flush();
+        return $book;
+    }
+
+
+
+    /**     * @Route("/book/list", name="book_list")
      */
     public function listBooksAction(){
         $books = $this
@@ -88,7 +113,7 @@ class DefaultController extends Controller
             return new Response('Parameter "email   " missing',400);
         }
 
-        $book = $this->get('doctrine_mongodb')->getRepository('AppBundle:Book')->find(['id' => $book]);
+        $book = $this->get('doctrine_mongodb')->getRepository('AppBundle:Book')->find($book);
 
         if(!$book){
             return new Response("Book $book not found",400);
@@ -117,4 +142,13 @@ class DefaultController extends Controller
         return new JsonResponse($order);
     }
 
+    /**
+     * @Route("/order/list", name="order_list")
+     * @return Response
+     * @internal param Request $request
+     */
+    public function listOrdersAction(){
+        $orders = $this->get('doctrine_mongodb')->getRepository('AppBundle:Order')->findAll();
+        return new JsonResponse($orders);
+    }
 }

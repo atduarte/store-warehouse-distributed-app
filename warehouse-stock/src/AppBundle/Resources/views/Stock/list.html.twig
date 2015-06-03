@@ -1,0 +1,31 @@
+{% extends 'AppBundle::base.html.twig' %}
+
+{% block body %}
+
+
+    <div class="container">
+
+        <h3>Warehouse Stock Requests</h3>
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Titulo</th>
+                    <th>Quantidade</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for stockRequest in stockRequests %}
+                    <tr>
+                        <td>{{ stockRequest.title }}</td>
+                        <td>{{ stockRequest.quantity }}</td>
+                        <td><a href="{{ path('send-stock', {id: stockRequest.id}) }}">Enviar</a>
+                    </td>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div><!-- /.container -->
+
+
+{% endblock %}

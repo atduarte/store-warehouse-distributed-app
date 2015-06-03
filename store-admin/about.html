@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Heroic Features - Start Bootstrap Template</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="css/heroic-features.css" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+<!-- Navigation -->
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/index.html">Hardvard Book Store</a>
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li>
+                    <a href="/index.html">Books</a>
+                </li>
+                <li>
+                    <a href="/orders.html">Orders</a>
+                </li>
+                <li>
+                    <a href="http://api.store.dev/dispatch">Dispatch All Orders</a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+<div class="container">
+    <!-- Jumbotron Header -->
+    <header class="jumbotron hero-spacer" style="background-image: url(./imgs/background.jpg);">
+        <h1 style="color: #FFFFFF">About Us </h1>
+
+    </header>
+
+
+        <p>Harvard Book Store é um vendedor independente e de propriedade local de usados, novos e livros de barganha em Harvard Square de Cambridge.</p>
+        <p>Harvard Book Store foi criada em 1932 por Mark Kramer, pai do proprietário de longa data Frank Kramer, e originalmente vendidos livros usados ​​para os alunos.</p>
+        <p>Há mais de 75 anos de propriedade familiar, a loja foi vendida no outono de 2008 para Jeffrey Mayersohn e Linda Seamonson de Wellesley, Massachusetts, e continua a ser um negócio independente.</p>
+        <p>Embora muitas vezes confundida com a Harvard Coop, A loja não tem nenhuma afiliação com a Universidade de Harvard ou a livraria Harvard Coop, que é gerido pela Barnes & Noble. Com um foco em um público acadêmico e intelectual, a seleção da loja e serviço ao cliente é repetidamente honrado por publicações e pesquisas locais.
+        Forbes chamado a loja do livro como a sua livraria topo na sua lista "do mundo Top Lojas 2005".</p>
+        <p>Em 2009, a loja introduziu um serviço on-demand impressão do livro chamado o Livro Máquina Espresso, produzido pela New York empresa On Demand Books, usando livros de domínio público disponível através do Google Library. </p>
+        <p>Nos últimos anos, uma série de eventos bem atendidos autor já recebeu Al Gore, Salman Rushdie, Haruki Murakami, John Updike, Orhan Pamuk, e Stephen King, além de uma série de escritores e acadêmicos locais. </p>
+
+    </div>
+</div>
+<!-- /.row -->
+<div id="map-canvas"></div>
+
+<hr>
+
+<!-- Footer -->
+<footer>
+    <div class="row">
+        <div class="col-lg-12">
+            <p>Copyright &copy; Books4ever 2015</p>
+        </div>
+    </div>
+</footer>
+
+</div>
+<!-- /.container -->
+
+<!-- jQuery -->
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="js/bootstrap.min.js"></script>
+
+
+<style>
+    #map-canvas {
+        width: 800px;
+        height: 400px;
+        margin-left: 20%;
+    }
+</style>
+
+<script src="https://maps.googleapis.com/maps/api/js"></script>
+<script>
+    function initialize() {
+        var mapCanvas = document.getElementById('map-canvas');
+        var mapOptions = {
+            center: new google.maps.LatLng(42.37253, -71.116347),
+            zoom: 25,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        }
+        var map = new google.maps.Map(mapCanvas, mapOptions)
+    }
+    google.maps.event.addDomListener(window, 'load', initialize);
+</script>
+
+
+</body>
+
+</html>

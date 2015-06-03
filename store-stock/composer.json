@@ -23,7 +23,8 @@
         "incenteev/composer-parameter-handler": "~2.0",
         "doctrine/mongodb-odm": "1.0.*@dev",
         "doctrine/mongodb-odm-bundle": "dev-master",
-        "nelmio/cors-bundle": "^1.4"
+        "nelmio/cors-bundle": "^1.4",
+        "misd/guzzle-bundle": "~1.0"
     },
     "require-dev": {
         "sensio/generator-bundle": "~2.3"

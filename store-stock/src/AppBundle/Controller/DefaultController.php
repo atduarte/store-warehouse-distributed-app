@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Document\Book;
 use AppBundle\Document\Order;
+use AppBundle\Document\QueueBook;
 use DateInterval;
 use DateTime;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -48,6 +49,7 @@ class DefaultController extends Controller
         $book->description = $description;
         $book->title = $title;
         $book->photo = $photo;
+        $book->stock = $stock;
 
         $this->get('doctrine_mongodb')->getManager()->persist($book);
         $this->get('doctrine_mongodb')->getManager()->flush();
@@ -72,7 +74,7 @@ class DefaultController extends Controller
         }
         $this->get('doctrine_mongodb')->getManager()->remove($book);
         $this->get('doctrine_mongodb')->getManager()->flush();
-        return $book;
+        return new JsonResponse($book);
     }
 
 
@@ -106,7 +108,7 @@ class DefaultController extends Controller
         }elseif(!$quantity || $quantity <= 0){
             return new Response('Parameter "quantity" missing or <= 0',400);
         }elseif(!$cliName){
-            return new Response('Parameter "cliName " missing',400);
+            return new Response('Parameter "clientName " missing',400);
         }elseif(!$address){
             return new Response('Parameter "address " missing',400);
         }elseif(!$email){
@@ -127,15 +129,16 @@ class DefaultController extends Controller
             $date->add(new DateInterval('P1D'));
 
             $order = new Order();
-            $order->address = $address;
-            $order->clientName = $cliName;
-            $order->email = $email;
-            $order->title = $book;
-            $order->state = Order::DISPATCHED;
+            $order->address     = $address;
+            $order->clientName  = $cliName;
+            $order->email       = $email;
+            $order->title       = $book;
+            $order->state       = Order::DISPATCHED;
             $order->dispatchingTime = $date;
             $dm->persist($book);
         }else{
-            //Enviar email
+
+
         }
 
         $dm->flush();
@@ -150,5 +153,22 @@ class DefaultController extends Controller
     public function listOrdersAction(){
         $orders = $this->get('doctrine_mongodb')->getRepository('AppBundle:Order')->findAll();
         return new JsonResponse($orders);
+    }
+
+    /**
+     * @Route("/queue/pop", name="order_list")
+     * @return Response
+     * @internal param Request $request
+     */
+    public function queuePopAction(){
+        $book = $this->get('doctrine_mongodb')->getRepository('AppBundle:QueueBook')->findBy([],['id'],1);
+
+        if(!$book){
+            return new Response('',204);
+        }
+        $this->get('doctrine_mongodb')->getManager()->remove($book);
+        $this->get('doctrine_mongodb')->getManager()->flush();
+        return new JsonResponse($book[0]->bookTitle);
+
     }
 }

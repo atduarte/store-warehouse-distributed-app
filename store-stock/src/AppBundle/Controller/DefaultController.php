@@ -7,6 +7,7 @@ use AppBundle\Document\Order;
 use AppBundle\Document\QueueBook;
 use DateInterval;
 use DateTime;
+use GuzzleHttp\Client;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -104,7 +105,7 @@ class DefaultController extends Controller
 
 
         if(!$book){
-            return new Response('Parameter "book    " missing',400);
+            return new Response('Parameter "book" missing',400);
         }elseif(!$quantity || $quantity <= 0){
             return new Response('Parameter "quantity" missing or <= 0',400);
         }elseif(!$cliName){
@@ -123,21 +124,30 @@ class DefaultController extends Controller
 
         $dm = $this->get('doctrine_mongodb')->getManager();
         $avQuantity = $book->stock;
+
+        $order = new Order();
+        $order->address     = $address;
+        $order->clientName  = $cliName;
+        $order->email       = $email;
+        $order->title       = $book;
+        $order->state       = Order::DISPATCHED;
+        $order->dispatchingTime = $date;
+        $order->quantity = $quantity;
+
         if ($avQuantity > $quantity){
             $book->stock -= $quantity;
-            $date = $date = new DateTime(time());
+            $date = $date = new DateTime();
             $date->add(new DateInterval('P1D'));
 
-            $order = new Order();
-            $order->address     = $address;
-            $order->clientName  = $cliName;
-            $order->email       = $email;
-            $order->title       = $book;
-            $order->state       = Order::DISPATCHED;
-            $order->dispatchingTime = $date;
             $dm->persist($book);
         }else{
-
+            try{
+                $guzz = new Client();
+                $response = $guzz->post('http://warehouse.dev/request');
+                $order->state = Order::WAITING_EXPEDITION;
+            }catch (\Exception $e){
+                //$a = new
+            }
 
         }
 

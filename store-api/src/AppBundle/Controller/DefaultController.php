@@ -38,6 +38,7 @@ class DefaultController extends Controller
         $title       = $request->request->get('title',false);
         $description = $request->request->get('description',false);
         $stock       = $request->request->get('stock',false);
+        $price       = $request->request->get('price', 1);
 
         if(!$photo){
             return new Response('Parameter "photo" missing ');
@@ -54,6 +55,7 @@ class DefaultController extends Controller
         $book->title = $title;
         $book->photo = $photo;
         $book->stock = $stock;
+        $book->price = $price;
 
         $this->get('doctrine_mongodb')->getManager()->persist($book);
         $this->get('doctrine_mongodb')->getManager()->flush();
@@ -111,7 +113,8 @@ class DefaultController extends Controller
         return new JsonResponse($book);
     }
 
-    /**     * @Route("/book/list", name="book_list")
+    /**
+     * @Route("/book/list", name="book_list")
      */
     public function listBooksAction(){
         $books = $this
@@ -291,7 +294,7 @@ class DefaultController extends Controller
     }
 
     /**
-     * @Route("/dispatch", name="dispatch",)
+     * @Route("/dispatch", name="dispatch")
      * @return JsonResponse
      */
     public function dispatchAction()
@@ -311,6 +314,21 @@ class DefaultController extends Controller
         $this->get('doctrine_mongodb')->getManager()->flush();
 
         return new JsonResponse([]);
+    }
+
+
+    public function printOrder(Order $order)
+    {
+        $client = new Client();
+
+        $message = 'Nome: ' . $order->clientName . ' | Email: ' . $order->email;
+        $message .= ' | Title: ' . $order->title . ' | Quantity: ' . $order->quantity;
+        $message .= ' | Price: ' . $order->price;
+
+        try {
+            $response = $client->post('http://localhost:3000?body=' . $message);
+        } catch (\Exception $e) {
+        }
     }
 
 

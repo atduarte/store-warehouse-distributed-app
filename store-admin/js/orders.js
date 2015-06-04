@@ -13,6 +13,7 @@ $(document).ready(function(){
             template.find('.email').text(orders[i]['email']);
             template.find('.state').text(orders[i]['state']);
             template.find('.dispatchingTime').text(orders[i]['dispatchingTime']);
+            template.find('.price').text(orders[i]['price']);
             template.removeClass('hidden');
             container.append(template);
         }
@@ -30,6 +31,7 @@ $(document).ready(function(){
     })
 
 });
+
 
 
 

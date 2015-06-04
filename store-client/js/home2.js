@@ -46,7 +46,8 @@ function loadBooks() {
             var description = data[i]['description'];
             var photo = data[i]['photo'];
             var id = data[i]['id'];
-            console.log(title);
+            var price = data[i]['price'];
+
             $("#row"+lastrow).append(
                 '<div class="col-md-3 col-sm-6 hero-feature book">' +
                 '<div class="thumbnail">'+
@@ -54,6 +55,7 @@ function loadBooks() {
                 '<div class="caption">'+
                 '<h3>'+title+'</h3>'+
                 '<p>'+description+'</p>'+
+                '<p>'+price+'</p>'+
                 '<p>'+
                 '<a id='+id+' class="btn btn-primary btnbuy">Buy Now!</a>'+
                 '</p>'+

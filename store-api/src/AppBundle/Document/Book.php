@@ -21,6 +21,8 @@ class Book extends  Document implements \JsonSerializable
     public $description;
     /** @MongoDB\Int() */
     public $stock;
+    /** @MongoDB\Float() */
+    public $price;
 
     function jsonSerialize(){
         return [
@@ -28,7 +30,8 @@ class Book extends  Document implements \JsonSerializable
             'photo'      => $this->photo,
             'title'      => $this->title,
             'description'=> $this->description,
-            'stock'      => $this->stock
+            'stock'      => $this->stock,
+            'price'      => $this->price ?: 0
         ];
     }
 }

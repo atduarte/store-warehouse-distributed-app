@@ -38,6 +38,8 @@ class Order extends Document implements JsonSerializable{
     /** @MongoDB\Timestamp() */
     public $dispatchingTime;
 
+    /** @MongoDB\Float() */
+    public $price;
 
     /**
      * (PHP 5 &gt;= 5.4.0)<br/>
